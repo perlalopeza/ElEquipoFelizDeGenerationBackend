@@ -1,0 +1,140 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`categories`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`categories` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`products`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`products` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `product_name` VARCHAR(255) NOT NULL,
+  `price` DECIMAL(10,2) NOT NULL,
+  `description` TEXT NULL,
+  `category_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_products_categories_idx` (`category_id` ASC) VISIBLE,
+  CONSTRAINT `fk_products_categories`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `mydb`.`categories` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`privileges`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`privileges` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `privilege` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`users`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`users` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `last_name` VARCHAR(255) NOT NULL,
+  `phone` VARCHAR(15) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `privileges_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `privileges_id`),
+  INDEX `fk_users_privileges1_idx` (`privileges_id` ASC) VISIBLE,
+  CONSTRAINT `fk_users_privileges1`
+    FOREIGN KEY (`privileges_id`)
+    REFERENCES `mydb`.`privileges` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`shopping_cart`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`shopping_cart` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `subtotal` DECIMAL(10,2) NOT NULL,
+  `shipment` DECIMAL(10,2) NOT NULL,
+  `total` DECIMAL(10,2) NOT NULL,
+  `users_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `users_id`),
+  INDEX `fk_shopping_cart_users1_idx` (`users_id` ASC) VISIBLE,
+  CONSTRAINT `fk_shopping_cart_users1`
+    FOREIGN KEY (`users_id`)
+    REFERENCES `mydb`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`cart_items`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`cart_items` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `quantity` VARCHAR(45) NOT NULL,
+  `shopping_cart_id` INT NOT NULL,
+  `products_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `shopping_cart_id`),
+  INDEX `fk_cart_items_shopping_cart1_idx` (`shopping_cart_id` ASC) VISIBLE,
+  INDEX `fk_cart_items_products1_idx` (`products_id` ASC) VISIBLE,
+  CONSTRAINT `fk_cart_items_shopping_cart1`
+    FOREIGN KEY (`shopping_cart_id`)
+    REFERENCES `mydb`.`shopping_cart` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cart_items_products1`
+    FOREIGN KEY (`products_id`)
+    REFERENCES `mydb`.`products` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`user_addresses`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`user_addresses` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `address` TEXT NOT NULL,
+  `users_id` INT NOT NULL,
+  `users_privileges_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `users_id`, `users_privileges_id`),
+  INDEX `fk_user_addresses_users1_idx` (`users_id` ASC, `users_privileges_id` ASC) VISIBLE,
+  CONSTRAINT `fk_user_addresses_users1`
+    FOREIGN KEY (`users_id` , `users_privileges_id`)
+    REFERENCES `mydb`.`users` (`id` , `privileges_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
