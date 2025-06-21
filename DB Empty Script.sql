@@ -18,7 +18,7 @@ USE `mydb` ;
 -- Table `mydb`.`categories`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`categories` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
@@ -28,11 +28,13 @@ ENGINE = InnoDB;
 -- Table `mydb`.`products`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`products` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `product_name` VARCHAR(255) NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
   `description` TEXT NULL,
-  `category_id` INT NOT NULL,
+  `category_id` BIGINT NOT NULL,
+  `stock` BIGINT NOT NULL,
+  `discount` DECIMAL(10,2) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_products_categories_idx` (`category_id` ASC) VISIBLE,
   CONSTRAINT `fk_products_categories`
@@ -47,7 +49,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`privileges`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`privileges` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `privilege` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
@@ -57,13 +59,14 @@ ENGINE = InnoDB;
 -- Table `mydb`.`users`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`users` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `last_name` VARCHAR(255) NOT NULL,
   `phone` VARCHAR(15) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
-  `privileges_id` INT NOT NULL,
+  `privileges_id` BIGINT NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`, `privileges_id`),
   INDEX `fk_users_privileges1_idx` (`privileges_id` ASC) VISIBLE,
   CONSTRAINT `fk_users_privileges1`
@@ -78,11 +81,11 @@ ENGINE = InnoDB;
 -- Table `mydb`.`shopping_cart`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`shopping_cart` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `subtotal` DECIMAL(10,2) NOT NULL,
   `shipment` DECIMAL(10,2) NOT NULL,
   `total` DECIMAL(10,2) NOT NULL,
-  `users_id` INT NOT NULL,
+  `users_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`, `users_id`),
   INDEX `fk_shopping_cart_users1_idx` (`users_id` ASC) VISIBLE,
   CONSTRAINT `fk_shopping_cart_users1`
@@ -97,10 +100,10 @@ ENGINE = InnoDB;
 -- Table `mydb`.`cart_items`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`cart_items` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `quantity` VARCHAR(45) NOT NULL,
-  `shopping_cart_id` INT NOT NULL,
-  `products_id` INT NOT NULL,
+  `shopping_cart_id` BIGINT NOT NULL,
+  `products_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`, `shopping_cart_id`),
   INDEX `fk_cart_items_shopping_cart1_idx` (`shopping_cart_id` ASC) VISIBLE,
   INDEX `fk_cart_items_products1_idx` (`products_id` ASC) VISIBLE,
@@ -121,10 +124,10 @@ ENGINE = InnoDB;
 -- Table `mydb`.`user_addresses`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`user_addresses` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `address` TEXT NOT NULL,
-  `users_id` INT NOT NULL,
-  `users_privileges_id` INT NOT NULL,
+  `users_id` BIGINT NOT NULL,
+  `users_privileges_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`, `users_id`, `users_privileges_id`),
   INDEX `fk_user_addresses_users1_idx` (`users_id` ASC, `users_privileges_id` ASC) VISIBLE,
   CONSTRAINT `fk_user_addresses_users1`
