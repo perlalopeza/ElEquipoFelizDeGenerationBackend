@@ -31,10 +31,10 @@ CREATE TABLE IF NOT EXISTS `mydb`.`products` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `product_name` VARCHAR(255) NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
-  `description` TEXT NULL,
+  `description` TEXT NOT NULL,
   `category_id` BIGINT NOT NULL,
   `stock` BIGINT NOT NULL,
-  `discount` DECIMAL(10,2) NULL,
+  `discount` DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_products_categories_idx` (`category_id` ASC) VISIBLE,
   CONSTRAINT `fk_products_categories`
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`shopping_cart` (
   `total` DECIMAL(10,2) NOT NULL,
   `cart_items_id` BIGINT NOT NULL,
   `users_id` BIGINT NOT NULL,
-  PRIMARY KEY (`id`, `cart_items_id`, `users_id`),
+  PRIMARY KEY (`id`, `users_id`),
   INDEX `fk_shopping_cart_cart_items1_idx` (`cart_items_id` ASC) VISIBLE,
   INDEX `fk_shopping_cart_users1_idx` (`users_id` ASC) VISIBLE,
   CONSTRAINT `fk_shopping_cart_cart_items1`
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user_addresses` (
   `town` TEXT NOT NULL,
   `state` TEXT NOT NULL,
   `users_id` BIGINT NOT NULL,
-  PRIMARY KEY (`id`, `users_id`),
+  PRIMARY KEY (`id`),
   INDEX `fk_user_addresses_users1_idx` (`users_id` ASC) VISIBLE,
   CONSTRAINT `fk_user_addresses_users1`
     FOREIGN KEY (`users_id`)
