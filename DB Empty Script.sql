@@ -78,6 +78,22 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `mydb`.`cart_items`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`cart_items` (
+  `quantity` VARCHAR(45) NOT NULL,
+  `products_id` BIGINT NOT NULL,
+  INDEX `fk_cart_items_products1_idx` (`products_id` ASC) VISIBLE,
+  PRIMARY KEY (`quantity`),
+  CONSTRAINT `fk_cart_items_products1`
+    FOREIGN KEY (`products_id`)
+    REFERENCES `mydb`.`products` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `mydb`.`shopping_cart`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`shopping_cart` (
@@ -86,34 +102,18 @@ CREATE TABLE IF NOT EXISTS `mydb`.`shopping_cart` (
   `shipment` DECIMAL(10,2) NOT NULL,
   `total` DECIMAL(10,2) NOT NULL,
   `users_id` BIGINT NOT NULL,
-  `users_privileges_id` BIGINT NOT NULL,
-  PRIMARY KEY (`id`, `users_id`, `users_privileges_id`),
-  INDEX `fk_shopping_cart_users1_idx` (`users_id` ASC, `users_privileges_id` ASC) VISIBLE,
+  `cart_items_quantity` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`, `users_id`),
+  INDEX `fk_shopping_cart_users1_idx` (`users_id` ASC) VISIBLE,
+  INDEX `fk_shopping_cart_cart_items1_idx` (`cart_items_quantity` ASC) VISIBLE,
   CONSTRAINT `fk_shopping_cart_users1`
-    FOREIGN KEY (`users_id` , `users_privileges_id`)
-    REFERENCES `mydb`.`users` (`id` , `privileges_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `mydb`.`cart_items`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`cart_items` (
-  `quantity` VARCHAR(45) NOT NULL,
-  `products_id` BIGINT NOT NULL,
-  `shopping_cart_id` BIGINT NOT NULL,
-  INDEX `fk_cart_items_products1_idx` (`products_id` ASC) VISIBLE,
-  INDEX `fk_cart_items_shopping_cart1_idx` (`shopping_cart_id` ASC) VISIBLE,
-  CONSTRAINT `fk_cart_items_products1`
-    FOREIGN KEY (`products_id`)
-    REFERENCES `mydb`.`products` (`id`)
+    FOREIGN KEY (`users_id`)
+    REFERENCES `mydb`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_cart_items_shopping_cart1`
-    FOREIGN KEY (`shopping_cart_id`)
-    REFERENCES `mydb`.`shopping_cart` (`id`)
+  CONSTRAINT `fk_shopping_cart_cart_items1`
+    FOREIGN KEY (`cart_items_quantity`)
+    REFERENCES `mydb`.`cart_items` (`quantity`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
