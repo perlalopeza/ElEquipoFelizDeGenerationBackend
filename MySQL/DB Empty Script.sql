@@ -11,7 +11,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
 USE `mydb` ;
 
 -- -----------------------------------------------------
@@ -21,10 +21,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`categories` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 5
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -34,19 +31,18 @@ CREATE TABLE IF NOT EXISTS `mydb`.`products` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `product_name` VARCHAR(255) NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
-  `description` TEXT NOT NULL,
+  `description` TEXT NULL,
   `category_id` BIGINT NOT NULL,
   `stock` BIGINT NOT NULL,
-  `discount` DECIMAL(10,2) NOT NULL,
+  `discount` DECIMAL(10,2) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_products_categories_idx` (`category_id` ASC) VISIBLE,
   CONSTRAINT `fk_products_categories`
     FOREIGN KEY (`category_id`)
-    REFERENCES `mydb`.`categories` (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 6
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    REFERENCES `mydb`.`categories` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -56,10 +52,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`privileges` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `privilege` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 4
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -78,11 +71,10 @@ CREATE TABLE IF NOT EXISTS `mydb`.`users` (
   INDEX `fk_users_privileges1_idx` (`privileges_id` ASC) VISIBLE,
   CONSTRAINT `fk_users_privileges1`
     FOREIGN KEY (`privileges_id`)
-    REFERENCES `mydb`.`privileges` (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 5
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    REFERENCES `mydb`.`privileges` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -98,33 +90,35 @@ CREATE TABLE IF NOT EXISTS `mydb`.`shopping_cart` (
   INDEX `fk_shopping_cart_users1_idx` (`users_id` ASC) VISIBLE,
   CONSTRAINT `fk_shopping_cart_users1`
     FOREIGN KEY (`users_id`)
-    REFERENCES `mydb`.`users` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    REFERENCES `mydb`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
 -- Table `mydb`.`cart_items`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`cart_items` (
-  `products_id` BIGINT NOT NULL,
-  `shopping_cart_id` BIGINT NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `quantity` INT NOT NULL,
+  `shopping_cart_id` BIGINT NOT NULL,
   `price_at_purchase` DECIMAL(10,2) NOT NULL,
-  INDEX `fk_cart_items_products1_idx` (`products_id` ASC) VISIBLE,
+  `products_id` BIGINT NOT NULL,
+  PRIMARY KEY (`id`, `shopping_cart_id`),
   INDEX `fk_cart_items_shopping_cart1_idx` (`shopping_cart_id` ASC) VISIBLE,
-  CONSTRAINT `fk_cart_items_products1`
-    FOREIGN KEY (`products_id`)
-    REFERENCES `mydb`.`products` (`id`),
+  INDEX `fk_cart_items_products1_idx` (`products_id` ASC) VISIBLE,
   CONSTRAINT `fk_cart_items_shopping_cart1`
     FOREIGN KEY (`shopping_cart_id`)
     REFERENCES `mydb`.`shopping_cart` (`id`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cart_items_products1`
+    FOREIGN KEY (`products_id`)
+    REFERENCES `mydb`.`products` (`id`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -132,21 +126,17 @@ COLLATE = utf8mb4_0900_ai_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`user_addresses` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `street_and_number` TEXT NOT NULL,
-  `neighborhood` TEXT NOT NULL,
-  `zip_code` BIGINT NOT NULL,
-  `town` TEXT NOT NULL,
-  `state` TEXT NOT NULL,
+  `address` TEXT NOT NULL,
   `users_id` BIGINT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_user_addresses_users1_idx` (`users_id` ASC) VISIBLE,
+  `users_privileges_id` BIGINT NOT NULL,
+  PRIMARY KEY (`id`, `users_id`, `users_privileges_id`),
+  INDEX `fk_user_addresses_users1_idx` (`users_id` ASC, `users_privileges_id` ASC) VISIBLE,
   CONSTRAINT `fk_user_addresses_users1`
-    FOREIGN KEY (`users_id`)
-    REFERENCES `mydb`.`users` (`id`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 5
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci;
+    FOREIGN KEY (`users_id` , `users_privileges_id`)
+    REFERENCES `mydb`.`users` (`id` , `privileges_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
