@@ -10,6 +10,6 @@ INSERT INTO users (name, last_name, phone, email, password, privileges_id) VALUE
 ('Ramses', 'Mayorquin', '5320230267', 'mayorram09@gmail.com', 'Aczino09#', 3),
 ('Diana', 'Ortiz', '5383846028', 'ortdia10@gmail.com', 'Harrypotter10#', 3),
 ('Eduardo', 'Varela', '53345128765', 'varedu11@gmail.com', 'Unatesismas11#', 3);
-
+ALTER table users AUTO_INCREMENT = 1;
 
 SELECT * FROM users;

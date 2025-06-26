@@ -1,8 +1,8 @@
 SELECT * FROM mydb.cart_items;
-INSERT INTO cart_items (quantity, products_id)
+INSERT INTO cart_items (id, quantity, products_id)
 VALUES
-(5, 5),
-(3, 10),
-(2, 9),
-(4, 8),
-(1, 6);
+(1, 5, 5),
+(2, 3, 10),
+(3, 2, 9),
+(4, 4, 8),
+(5, 1, 6);
