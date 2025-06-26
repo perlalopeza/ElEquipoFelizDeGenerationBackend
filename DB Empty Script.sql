@@ -110,7 +110,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `mydb`.`cart_items` (
   `products_id` BIGINT NOT NULL,
   `shopping_cart_id` BIGINT NOT NULL,
-  `quantity` VARCHAR(45) NOT NULL,
+  `quantity` INT NOT NULL,
   `price_at_purchase` DECIMAL(10,2) NOT NULL,
   INDEX `fk_cart_items_products1_idx` (`products_id` ASC) VISIBLE,
   INDEX `fk_cart_items_shopping_cart1_idx` (`shopping_cart_id` ASC) VISIBLE,
