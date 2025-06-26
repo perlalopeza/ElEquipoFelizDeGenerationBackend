@@ -6,4 +6,4 @@ VALUES
 ('Calle 5 de Mayo #45', 'Centro', '20000', 'Aguascalientes', 'Aguascalientes', 2),
 ('Blvd. Miguel Hidalgo 789', 'Zona Río', '22010', 'Tijuana', 'Baja California', 3),
 ('Av. Juárez 321', 'Centro Histórico', '68000', 'Estado de México', 'Estado de México', 4);
-
+ALTER table user_addresses AUTO_INCREMENT = 1;
