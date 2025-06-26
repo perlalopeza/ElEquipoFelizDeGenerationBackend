@@ -103,6 +103,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`cart_items` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `quantity` INT NOT NULL,
   `shopping_cart_id` BIGINT NOT NULL,
+  `price_at_purchase` DECIMAL(10,2) NOT NULL,
   `products_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`, `shopping_cart_id`),
   INDEX `fk_cart_items_shopping_cart1_idx` (`shopping_cart_id` ASC) VISIBLE,
