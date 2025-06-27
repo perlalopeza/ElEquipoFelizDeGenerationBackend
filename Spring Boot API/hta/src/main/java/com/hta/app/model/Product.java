@@ -162,11 +162,14 @@ public class Product {
 		builder.append(stock);
 		builder.append(", discount=");
 		builder.append(discount);
-		builder.append(", category=");
-		builder.append(category);
 		builder.append("]");
 		return builder.toString();
 	}
+
+
+
+
+	
 
 	
 	
