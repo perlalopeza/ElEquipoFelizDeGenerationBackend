@@ -18,11 +18,11 @@ public class ShoppingCart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(nullable=false)
+	@Column(precision = 10, scale = 2, nullable=false)
 	private BigDecimal subtotal;
-	@Column(nullable=false)
+	@Column(precision = 10, scale = 2, nullable=false)
 	private BigDecimal shipment;
-	@Column(nullable=false)
+	@Column(precision = 10, scale = 2, nullable=false)
 	private BigDecimal total;
 	 @ManyToOne 
 		@JoinColumn(name="users_id", nullable=false) 

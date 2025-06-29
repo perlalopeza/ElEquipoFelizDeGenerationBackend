@@ -12,13 +12,13 @@ public class Product {
 	private Long id;
 	@Column(name= "product_name", nullable=false)
 	private String productName;
-	@Column(nullable=false)
+	@Column(precision = 10, scale = 2, nullable=false)
 	private BigDecimal price;
-	@Column(nullable=false)
+	@Column(columnDefinition = "TEXT", nullable=false)
 	private String description;
 	@Column(nullable=false)
 	private Long stock;
-	@Column(nullable=false)
+	@Column(precision = 10, scale = 2, nullable=false)
 	private BigDecimal discount;
 	@ManyToOne
 	@JoinColumn(name="category_id", nullable=false)
