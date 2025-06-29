@@ -3,26 +3,26 @@ package com.hta.app.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "addresses")
+@Table(name = "user_addresses")
 public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "street_and_number", nullable = false)
+    @Column(name = "street_and_number", columnDefinition = "TEXT", nullable = false)
     private String streetAndNumber;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String neighborhood;
 
     @Column(name = "zip_code", nullable = false)
     private Long zipCode;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String town;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String state;
     
     @ManyToOne 
