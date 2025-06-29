@@ -18,7 +18,7 @@ public class Product {
 	private String description;
 	@Column(nullable=false)
 	private Long stock;
-	@Column(nullable=false)
+	@Column(precision = 10, scale = 2, nullable=false)
 	private BigDecimal discount;
 	@ManyToOne
 	@JoinColumn(name="category_id", nullable=false)
