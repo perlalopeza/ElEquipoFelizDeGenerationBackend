@@ -31,10 +31,10 @@ CREATE TABLE IF NOT EXISTS `mydb`.`products` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `product_name` VARCHAR(255) NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
-  `description` TEXT NULL,
+  `description` TEXT NOT NULL,
   `category_id` BIGINT NOT NULL,
   `stock` BIGINT NOT NULL,
-  `discount` DECIMAL(10,2) NULL,
+  `discount` DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_products_categories_idx` (`category_id` ASC) VISIBLE,
   CONSTRAINT `fk_products_categories`
@@ -65,9 +65,9 @@ CREATE TABLE IF NOT EXISTS `mydb`.`users` (
   `phone` VARCHAR(15) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
-  `privileges_id` BIGINT NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`, `privileges_id`),
+  `privileges_id` BIGINT NOT NULL,
+  PRIMARY KEY (`id`),
   INDEX `fk_users_privileges1_idx` (`privileges_id` ASC) VISIBLE,
   CONSTRAINT `fk_users_privileges1`
     FOREIGN KEY (`privileges_id`)
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`shopping_cart` (
   `shipment` DECIMAL(10,2) NOT NULL,
   `total` DECIMAL(10,2) NOT NULL,
   `users_id` BIGINT NOT NULL,
-  PRIMARY KEY (`id`, `users_id`),
+  PRIMARY KEY (`id`),
   INDEX `fk_shopping_cart_users1_idx` (`users_id` ASC) VISIBLE,
   CONSTRAINT `fk_shopping_cart_users1`
     FOREIGN KEY (`users_id`)
@@ -100,22 +100,21 @@ ENGINE = InnoDB;
 -- Table `mydb`.`cart_items`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`cart_items` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `quantity` INT NOT NULL,
-  `shopping_cart_id` BIGINT NOT NULL,
-  `price_at_purchase` DECIMAL(10,2) NOT NULL,
   `products_id` BIGINT NOT NULL,
-  PRIMARY KEY (`id`, `shopping_cart_id`),
-  INDEX `fk_cart_items_shopping_cart1_idx` (`shopping_cart_id` ASC) VISIBLE,
+  `shopping_cart_id` BIGINT NOT NULL,
+  `price_at_purchase` DECIMAL(10,2) NULL,
   INDEX `fk_cart_items_products1_idx` (`products_id` ASC) VISIBLE,
-  CONSTRAINT `fk_cart_items_shopping_cart1`
-    FOREIGN KEY (`shopping_cart_id`)
-    REFERENCES `mydb`.`shopping_cart` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  INDEX `fk_cart_items_shopping_cart1_idx` (`shopping_cart_id` ASC) VISIBLE,
+  PRIMARY KEY (`products_id`, `shopping_cart_id`),
   CONSTRAINT `fk_cart_items_products1`
     FOREIGN KEY (`products_id`)
     REFERENCES `mydb`.`products` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_cart_items_shopping_cart1`
+    FOREIGN KEY (`shopping_cart_id`)
+    REFERENCES `mydb`.`shopping_cart` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -126,14 +125,17 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`user_addresses` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `address` TEXT NOT NULL,
+  `street_and_number` TEXT NOT NULL,
+  `neighborhood` TEXT NOT NULL,
+  `zip_code` BIGINT NOT NULL,
+  `town` TEXT NOT NULL,
+  `state` TEXT NOT NULL,
   `users_id` BIGINT NOT NULL,
-  `users_privileges_id` BIGINT NOT NULL,
-  PRIMARY KEY (`id`, `users_id`, `users_privileges_id`),
-  INDEX `fk_user_addresses_users1_idx` (`users_id` ASC, `users_privileges_id` ASC) VISIBLE,
+  PRIMARY KEY (`id`),
+  INDEX `fk_user_addresses_users1_idx` (`users_id` ASC) VISIBLE,
   CONSTRAINT `fk_user_addresses_users1`
-    FOREIGN KEY (`users_id` , `users_privileges_id`)
-    REFERENCES `mydb`.`users` (`id` , `privileges_id`)
+    FOREIGN KEY (`users_id`)
+    REFERENCES `mydb`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
