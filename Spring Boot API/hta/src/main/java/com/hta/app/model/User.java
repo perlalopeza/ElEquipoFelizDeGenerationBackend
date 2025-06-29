@@ -1,6 +1,8 @@
 package com.hta.app.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.*;
 
@@ -21,8 +23,9 @@ public class User {
 	private String email;
 	@Column(nullable=false)
 	private String password;
-	@Column(name="created_at", nullable=false)
-	private Timestamp createdAt;
+	@CreationTimestamp
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private LocalDateTime createdAt;
 	@ManyToOne 
 	@JoinColumn(name="privileges_id", nullable=false)
 	private Privilege privilege;
@@ -31,8 +34,8 @@ public class User {
 		
 	}
 
-	public User(Long id, String name, String lastName, String phone, String email, String password, Timestamp createdAt,
-			Privilege privilege) {
+	public User(Long id, String name, String lastName, String phone, String email, String password,
+			LocalDateTime createdAt, Privilege privilege) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -92,11 +95,11 @@ public class User {
 		this.password = password;
 	}
 
-	public Timestamp getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -128,4 +131,6 @@ public class User {
 		builder.append("]");
 		return builder.toString();
 	}
+	
+	
 }
