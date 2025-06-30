@@ -18,6 +18,8 @@ public class Product {
 	private String description;
 	@Column(nullable=false)
 	private Long stock;
+	@Column(columnDefinition = "TEXT", nullable=false)
+	private String image;
 	@Column(precision = 10, scale = 2, nullable=false)
 	private BigDecimal discount;
 	@ManyToOne
@@ -34,14 +36,15 @@ public class Product {
 
 
 
-	public Product(Long id, String productName, BigDecimal price, String description, Long stock, BigDecimal discount,
-			Category category) {
+	public Product(Long id, String productName, BigDecimal price, String description, Long stock, String image,
+			BigDecimal discount, Category category) {
 		super();
 		this.id = id;
 		this.productName = productName;
 		this.price = price;
 		this.description = description;
 		this.stock = stock;
+		this.image = image;
 		this.discount = discount;
 		this.category = category;
 	}
@@ -119,6 +122,20 @@ public class Product {
 
 
 
+	public String getImage() {
+		return image;
+	}
+
+
+
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+
+
+
 	public BigDecimal getDiscount() {
 		return discount;
 	}
@@ -160,12 +177,18 @@ public class Product {
 		builder.append(description);
 		builder.append(", stock=");
 		builder.append(stock);
+		builder.append(", image=");
+		builder.append(image);
 		builder.append(", discount=");
 		builder.append(discount);
 		builder.append("]");
 		return builder.toString();
 	}
 
+
+
+
+	
 
 
 
