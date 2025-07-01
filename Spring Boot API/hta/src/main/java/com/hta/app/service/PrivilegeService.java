@@ -11,6 +11,6 @@ public interface PrivilegeService {
 	Privilege save(Privilege privilege);
 	Privilege update(Long id, Privilege privilege);
 	void deleteById(Long id);
-	Set<String> getUsersWithSpecificRoleId(Long id);
+	Set<String> getUsersWithSpecificPrivilegeId(Long id);
 	
 }
