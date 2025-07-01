@@ -12,7 +12,7 @@ import com.hta.app.service.ProductService;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-	ProductRepository  productRepository;
+	private final ProductRepository  productRepository;
      
 	public ProductServiceImpl(ProductRepository productRepository) {
 		super();
