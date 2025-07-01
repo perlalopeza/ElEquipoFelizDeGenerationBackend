@@ -24,7 +24,7 @@ public class Address {
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String state;
-    
+
     @ManyToOne 
 	@JoinColumn(name="users_id", nullable=false) 
     private User user;
