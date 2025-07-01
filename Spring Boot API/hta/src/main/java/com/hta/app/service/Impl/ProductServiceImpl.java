@@ -3,10 +3,13 @@ package com.hta.app.service.Impl;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.stereotype.Service;
+
 import com.hta.app.model.Product;
 import com.hta.app.repository.ProductRepository;
 import com.hta.app.service.ProductService;
 
+@Service
 public class ProductServiceImpl implements ProductService {
 
 	ProductRepository  productRepository;
