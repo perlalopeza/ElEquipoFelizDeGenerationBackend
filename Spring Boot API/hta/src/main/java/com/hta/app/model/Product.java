@@ -184,6 +184,20 @@ public class Product {
 		builder.append("]");
 		return builder.toString();
 	}
+	
+
+
+	
+
+	
+	
+	
+	
+
+
+
+
+	
 
 
 
