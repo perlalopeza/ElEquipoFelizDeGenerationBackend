@@ -14,26 +14,26 @@ import com.hta.app.service.CartItemService;
 public class CartItemServiceImpl implements CartItemService {
 
 	 @Autowired
-	    private CartItemRepository repository;
+	    private CartItemRepository cartItemrepository;
 
 	    @Override
 	    public Iterable<CartItem> findAll() {
-	        return repository.findAll();
+	        return cartItemrepository.findAll();
 	    }
 
 	    @Override
 	    public Optional<CartItem> findById(CartItemId id) {
-	        return repository.findById(id);
+	        return cartItemrepository.findById(id);
 	    }
 
 	    @Override
 	    public CartItem save(CartItem item) {
-	        return repository.save(item);
+	        return cartItemrepository.save(item);
 	    }
 
 	    @Override
 	    public void delete(CartItemId id) {
-	        repository.deleteById(id);
+	    	cartItemrepository.deleteById(id);
 	    }
 	
 }
