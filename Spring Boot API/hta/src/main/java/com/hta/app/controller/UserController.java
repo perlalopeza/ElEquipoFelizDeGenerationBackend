@@ -10,6 +10,9 @@ import com.hta.app.model.User;
 import com.hta.app.repository.PrivilegeRepository;
 import com.hta.app.service.UserService;
 
+@CrossOrigin(origins = "*")
+@RestController 
+@RequestMapping("/api/v1/users")
 public class UserController {
     UserService userService;
     private final PrivilegeRepository privilegeRepository;
