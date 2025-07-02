@@ -30,12 +30,12 @@ public class ProductController {
 	}
 	
 	
-	@GetMapping
-	ResponseEntity<Iterable<Product>>getAllProduct(){
-		Iterable<Product> products= productService.findAll();
-		return ResponseEntity.ok(products);
-
-		}
+	@GetMapping("/{id}")
+	Product getProductById(@PathVariable("id")Long id) {
+		Product existingProduct = productService.findById(id);
+		return existingProduct;
+	}
+	
 	
 	@PutMapping("/{id}")
 	Product updateProduct(@PathVariable("id") Long id, @RequestBody Product product) {
