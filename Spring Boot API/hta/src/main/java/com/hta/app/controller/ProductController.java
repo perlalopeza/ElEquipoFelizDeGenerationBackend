@@ -24,7 +24,6 @@ import com.hta.app.service.ProductService;
 public class ProductController {
 	ProductService productService;
 	private final CategoryRepository categoryRepository;
-	
 	public ProductController(ProductService productService, CategoryRepository categoryRepository) {
 	    this.productService = productService;
 	    this.categoryRepository = categoryRepository;

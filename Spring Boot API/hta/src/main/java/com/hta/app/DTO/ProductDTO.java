@@ -8,17 +8,11 @@ import com.hta.app.model.Category;
 public class ProductDTO {
 
 	private String productName;
-	
 	private BigDecimal price;
-	
 	private String description;
-	
 	private Long stock;
-	
 	private String image;
-	
 	private BigDecimal discount;
-	
 	private Long categoryId;
 
 	public String getProductName() {
