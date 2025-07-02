@@ -53,7 +53,6 @@ public class UserController {
 	    user.setPhone(dto.getPhone());
 	    user.setEmail(dto.getEmail());
 	    user.setPassword(dto.getPassword());
-	   // user.setCreatedAt(dto.getCreatedAt());
 	    user.setPrivilege(privilege);
 	    
 	   
