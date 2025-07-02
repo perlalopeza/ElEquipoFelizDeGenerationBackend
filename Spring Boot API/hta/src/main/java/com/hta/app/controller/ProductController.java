@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hta.app.DTO.ProductDTO;
+import com.hta.app.model.Category;
 import com.hta.app.model.Product;
+import com.hta.app.repository.CategoryRepository;
 import com.hta.app.service.ProductService;
 
 @CrossOrigin(origins = "*")
@@ -20,11 +23,13 @@ import com.hta.app.service.ProductService;
 @RequestMapping("/api/v1/products")
 public class ProductController {
 	ProductService productService;
-
-	public ProductController(ProductService productService) {
-		super();
-		this.productService = productService;
+	private final CategoryRepository categoryRepository;
+	
+	public ProductController(ProductService productService, CategoryRepository categoryRepository) {
+	    this.productService = productService;
+	    this.categoryRepository = categoryRepository;
 	}
+	
 	
 	@GetMapping
 	ResponseEntity<Iterable<Product>>getAllProduct(){
@@ -46,8 +51,20 @@ public class ProductController {
 	}
 
 	@PostMapping
-	ResponseEntity<Product> createProduct(@RequestBody Product product) {
-	Product newProduct = productService.save(product);
-	return new ResponseEntity<Product>(newProduct, HttpStatus.CREATED);
+	ResponseEntity<Product> createProduct(@RequestBody ProductDTO dto) {
+	    Category category = categoryRepository.findById(dto.getCategoryId())
+	        .orElseThrow(() -> new RuntimeException("Categoría no encontrada con id: " + dto.getCategoryId()));
+
+	    Product product = new Product();
+	    product.setProductName(dto.getProductName());
+	    product.setPrice(dto.getPrice());
+	    product.setDescription(dto.getDescription());
+	    product.setStock(dto.getStock());
+	    product.setImage(dto.getImage());
+	    product.setDiscount(dto.getDiscount());
+	    product.setCategory(category);  
+
+	    Product newProduct = productService.save(product);
+	    return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
 	}
 }
