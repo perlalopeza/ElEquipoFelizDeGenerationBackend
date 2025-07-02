@@ -3,10 +3,13 @@ package com.hta.app.service.Impl;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.stereotype.Service;
+
 import com.hta.app.model.Address;
 import com.hta.app.repository.AddressRepository;
 import com.hta.app.service.AddressService;
 
+@Service
 public class AddressServiceImpl implements AddressService {
 	
 	AddressRepository addressRepository;

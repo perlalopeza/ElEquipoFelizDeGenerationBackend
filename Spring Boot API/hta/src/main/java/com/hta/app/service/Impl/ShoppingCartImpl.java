@@ -3,10 +3,13 @@ package com.hta.app.service.Impl;
 import java.util.Optional;
 import java.util.Set;
 
+import org.springframework.stereotype.Service;
+
 import com.hta.app.model.ShoppingCart;
 import com.hta.app.repository.ShoppingCartRepository;
 import com.hta.app.service.ShoppingCartService;
 
+@Service
 public class ShoppingCartImpl implements ShoppingCartService{
 	
 	ShoppingCartRepository shoppingCartRepository;
