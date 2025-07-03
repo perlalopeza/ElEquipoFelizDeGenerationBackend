@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.hta.app.DTO.UserDTO;
 import com.hta.app.model.Privilege;
+import com.hta.app.model.Product;
 import com.hta.app.model.User;
 import com.hta.app.repository.PrivilegeRepository;
 import com.hta.app.service.UserService;
@@ -23,12 +24,14 @@ public class UserController {
 		this.privilegeRepository = privilegeRepository;
 	}
     
-	@GetMapping
-	ResponseEntity<Iterable<User>>getAllProduct(){
-		Iterable<User> user= userService.findAll();
-		return ResponseEntity.ok(user);
-
-		} 
+		
+	@GetMapping("/{id}")
+	User getUserById(@PathVariable("id")Long id) {
+		User existingUser = userService.findById(id);
+		return existingUser;
+	}
+	
+	
 	
 	@PutMapping("/{id}")
 	User updateUser(@PathVariable("id") Long id, @RequestBody User user) {
