@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.hta.app.DTO.ShoppingCartDTO;
+import com.hta.app.model.Product;
 import com.hta.app.model.ShoppingCart;
 import com.hta.app.model.User;
 import com.hta.app.repository.UserRepository;
@@ -32,13 +33,16 @@ public class ShoppingCartController {
 			this.shoppingCartService = shoppingCartService;
 			this.userRepository = userRepository;
 		}
-
-		@GetMapping
-		ResponseEntity<Iterable<ShoppingCart>>getAllShoppingCart(){
-			Iterable<ShoppingCart> shoppingCart= shoppingCartService.findAll();
-			return ResponseEntity.ok(shoppingCart);
-
-			}
+		
+		
+		@GetMapping("/{id}")
+		ShoppingCart getShoppingCartById(@PathVariable("id")Long id) {
+			ShoppingCart existingShoppingCart = shoppingCartService.findById(id);
+			return existingShoppingCart;
+		}
+		
+		
+		
 		
 		@PutMapping("/{id}")
 		ShoppingCart updateShoppingCart(@PathVariable("id") Long id, @RequestBody ShoppingCart shoppingCart) {

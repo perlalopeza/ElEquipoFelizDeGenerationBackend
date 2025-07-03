@@ -83,8 +83,25 @@ public class CartItem {
 	}
 
 
+	
+	
+	public CartItemId getId() {
+		return id;
+	}
+
+
+	public void setId(CartItemId id) {
+		this.id = id;
+	}
+
+
 	public void setPriceAtPurchase(BigDecimal priceAtPurchase) {
 		this.priceAtPurchase = priceAtPurchase;
+	}
+
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 
