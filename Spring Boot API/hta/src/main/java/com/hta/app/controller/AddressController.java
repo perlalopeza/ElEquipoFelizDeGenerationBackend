@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hta.app.DTO.AddressDTO;
 import com.hta.app.model.Address;
+import com.hta.app.model.Product;
 import com.hta.app.model.User;
 import com.hta.app.repository.UserRepository;
 import com.hta.app.service.AddressService;
@@ -32,12 +33,13 @@ public AddressController(AddressService addressService, UserRepository userRepos
 	this.userRepository = userRepository;
 }
 
-@GetMapping
-ResponseEntity<Iterable<Address>>getAllAddress(){
-	Iterable<Address> Address= addressService.findAll();
-	return ResponseEntity.ok(Address);
 
-	}
+
+@GetMapping("/{id}")
+Address getAddressById(@PathVariable("id")Long id) {
+	Address existingAddress = addressService.findById(id);
+	return existingAddress;
+}
 
 @PutMapping("/{id}")
 Address updateAddress(@PathVariable("id") Long id, @RequestBody Address address) {
