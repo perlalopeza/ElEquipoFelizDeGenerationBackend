@@ -39,8 +39,8 @@ public class CartItemController {
 	
 	 @GetMapping("/{productId}/{shoppingCartId}")
 	     ResponseEntity<CartItem> getCartItemById(
-	    	        @PathVariable("productId") Long productId,
-	    	        @PathVariable("shoppingCartId") Long shoppingCartId) {
+	            @PathVariable Long productId,
+	            @PathVariable Long shoppingCartId) {
 
 	        CartItemId id = new CartItemId(productId, shoppingCartId);
 	        CartItem item = cartItemService.findById(id).orElse(null);
@@ -58,15 +58,14 @@ public class CartItemController {
 	    }
 
 	    @DeleteMapping("/{productId}/{shoppingCartId}")
-	    public ResponseEntity<Void> deleteCartItem(
-	            @PathVariable("productId") Long productId,
-	            @PathVariable("shoppingCartId") Long shoppingCartId) {
+	    ResponseEntity<Void> deleteCartItem(
+	            @PathVariable Long productId,
+	            @PathVariable Long shoppingCartId) {
 
 	        CartItemId id = new CartItemId(productId, shoppingCartId);
 	        cartItemService.delete(id);
 	        return ResponseEntity.noContent().build();
 	    }
-
 	
 	
 }
