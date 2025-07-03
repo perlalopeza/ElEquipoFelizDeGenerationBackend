@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hta.app.model.Privilege;
+import com.hta.app.model.Product;
 import com.hta.app.service.PrivilegeService;
 
 @CrossOrigin(origins = "*")
@@ -27,11 +28,15 @@ public class PrivilegeController {
 		this.privilegeService = privilegeService;
 	}
 	
-	@GetMapping
-	ResponseEntity<Iterable<Privilege>>getAllPrivileges(){
-		Iterable<Privilege> privileges= privilegeService.findAll();
-		return ResponseEntity.ok(privileges);
+
+	
+	@GetMapping("/{id}")
+	Privilege getPrivilegeById(@PathVariable("id")Long id) {
+		Privilege existingPrivilege = privilegeService.findById(id);
+		return existingPrivilege;
 	}
+	
+	
 	
 	@PutMapping("/{id}")
 	Privilege updatePrivilege(@PathVariable("id") Long id, @RequestBody Privilege privilege) {

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hta.app.model.Category;
+import com.hta.app.model.User;
 import com.hta.app.service.CategoryService;
 @CrossOrigin(origins = "*")
 @RestController //@Controller y @ResponseBody
@@ -32,6 +33,14 @@ public class CategoryController {
 		return ResponseEntity.ok(categories);
 
 		}
+	
+	@GetMapping("/{id}")
+	Category getCategoryById(@PathVariable("id")Long id) {
+		Category existingCategory = categoryService.findById(id);
+		return existingCategory;
+	}
+	
+	
 	
 	@PutMapping("/{id}")
 	Category updateCategory(@PathVariable("id") Long id, @RequestBody Category category) {
