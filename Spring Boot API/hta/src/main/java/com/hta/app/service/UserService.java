@@ -11,4 +11,5 @@ public interface UserService {
 	User update(Long id, User user);
 	void deleteById(Long id);
 	Set<String> getUsersWithSpecificUserId(Long id);
+	User findByEmail(String email);
 }

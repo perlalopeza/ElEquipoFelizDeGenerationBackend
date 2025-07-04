@@ -95,12 +95,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (isValid) {
+      //const hashedPassword = await hashPassword(password);
       const userData = {
         name: name,
         lastName: lastName,
         phone: phone,
         email: email,
-        password: password, // sin hash, el backend lo hace
+        password: password, 
         privilegeId: 2
       };
 

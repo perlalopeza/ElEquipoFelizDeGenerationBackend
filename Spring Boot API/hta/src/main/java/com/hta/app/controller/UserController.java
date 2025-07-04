@@ -1,5 +1,7 @@
 package com.hta.app.controller;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,6 +63,25 @@ public class UserController {
 
 	    User newUser = userService.save(user);
 	    return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody Map<String, String> loginData) {
+	    String email = loginData.get("email");
+	    String password = loginData.get("password");
+
+	    try {
+	        User user = userService.findByEmail(email);
+
+	        if (!user.getPassword().equals(password)) {
+	            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña incorrecta");
+	        }
+
+	        return ResponseEntity.ok(user);
+
+	    } catch (IllegalStateException e) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no encontrado");
+	    }
 	}
 	
 	
