@@ -13,6 +13,7 @@ public class UserDTO {
 	private String password;
 	private LocalDateTime createdAt;
 	private Long privilegeId;
+	
 	public String getName() {
 		return name;
 	}
