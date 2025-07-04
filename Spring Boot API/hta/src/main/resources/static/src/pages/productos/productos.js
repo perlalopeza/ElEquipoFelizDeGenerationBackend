@@ -1,6 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
   inicializarPagina();
+  
+
+  
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const usuario = JSON.parse(localStorage.getItem("usuarioActivo") || "{}");
+    const btnInventario = document.getElementById("btnInventario");
+
+    // Validación por nombre (en mayúsculas)
+    if (usuario.nombre !== "ADMIN") {
+      btnInventario.style.display = "none"; // Oculta el botón si no es ADMIN
+    } else {
+      btnInventario.style.display = "inline-block"; // Muestra solo si es ADMIN
+    }
+  });
 
 function inicializarPagina() {
   cargarFiltros();
@@ -8,6 +24,7 @@ function inicializarPagina() {
   // Eventos para los filtros
   document.getElementById("filtros-container").addEventListener("change", aplicarFiltros);
   cargarProductosDesdeBackend();
+
 
   configurarBotonVolver();
 }
@@ -200,6 +217,7 @@ function mostrarTodasLasSecciones() {
 }
 
 /* ──────── CARGAR PRODUCTOS ──────── */
+
 async function cargarProductosDesdeBackend() {
   try {
     const response = await fetch("http://localhost:8088/api/v1/products");
