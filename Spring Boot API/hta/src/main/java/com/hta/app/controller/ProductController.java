@@ -1,5 +1,8 @@
 package com.hta.app.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,11 +33,14 @@ public class ProductController {
 	}
 	
 	
-	@GetMapping("/{id}")
-	Product getProductById(@PathVariable("id")Long id) {
-		Product existingProduct = productService.findById(id);
-		return existingProduct;
+	@GetMapping
+	public List<Product> getAllProducts() {
+	    List<Product> lista = new ArrayList<>();
+	    productService.findAll().forEach(lista::add);
+	    return lista;
 	}
+
+
 	
 	
 	@PutMapping("/{id}")
