@@ -2,6 +2,7 @@ import { insertFooter } from "../../modules/footer/footer.js";
 
 insertFooter(document.getElementById("footer"));
 
+/*
 // Función para hashear la contraseña (debe ir antes de su uso)
 async function hashPassword(password) {
   const encoder = new TextEncoder();
@@ -10,7 +11,7 @@ async function hashPassword(password) {
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   return hashHex;
-}
+}*/
 
 //Validaciones Formulario//
 
@@ -94,106 +95,112 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (isValid) {
-      const hashedPassword = await hashPassword(password);
+      //const hashedPassword = await hashPassword(password);
       const userData = {
-        nombre: name,
-        apellido: lastName,
-        telefono: phone,
+        name: name,
+        lastName: lastName,
+        phone: phone,
         email: email,
-        password: hashedPassword // Aquí guarda la contraseña hasheada
+        password: password, 
+        privilegeId: 2
       };
 
-      const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-      const usuarioExistente = usuarios.find(u => u.email === email);
+      try {
+        const response = await fetch("http://localhost:8088/api/v1/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(userData)
+        });
 
-      if (usuarioExistente) { // Error si ese correo ya está registrado
-        showFieldError('email', 'Este correo ya está registrado.');
-        isValid = false;
-        return;
+        if (!response.ok) {
+          const errorText = await response.text();
+          showFieldError('email', errorText); // muestra el error del backend
+          return;
+        }
+
+        const newUser = await response.json();
+
+        localStorage.setItem('usuarioActivo', JSON.stringify({
+          email: newUser.email,
+          nombre: newUser.name,
+          apellido: newUser.lastName,
+          telefono: newUser.phone
+        }));
+
+        showSuccess('¡Usuario registrado correctamente!');
+        this.reset();
+
+        setTimeout(() => {
+          window.location.href = "../../../src/pages/perfilDeUsuario/perfilDeUsuario.html";
+        }, 1000);
+
+      } catch (error) {
+        console.error('Error en la petición:', error);
+        showErrors(['No se pudo registrar el usuario. Intenta más tarde.']);
       }
-
-      // Guardar en localStorage
-      usuarios.push(userData);
-      localStorage.setItem("usuarios", JSON.stringify(usuarios));
-
-      localStorage.setItem('usuarioActivo', JSON.stringify({
-        email: email,
-        nombre: name,
-        apellido: lastName,
-        telefono: phone
-      }));
-      window.dispatchEvent(new Event('storage')); // Notifica a otras pestañas
-
-      // Mostrar mensaje y limpiar formulario
-      console.log("Usuario registrado (JSON):", JSON.stringify(userData, null, 2));
-      showSuccess('¡Usuario registrado correctamente!');
-      this.reset();
-
-      // Redirigir a la página de perfil después del registro exitoso
-      setTimeout(() => {
-        window.location.href = "../../../src/pages/perfilDeUsuario/perfilDeUsuario.html";
-      }, 1000); // Redirige después de 1 segundo para mostrar el mensaje
     }
-  });
+  }); 
 });
 
 
-// Funciones de erores /limpiar campos
-function clearFieldErrors(fieldIds) {
-  fieldIds.forEach(id => {
-    const field = document.getElementById(id);
-    const errorElement = field.nextElementSibling;
-    if (errorElement && errorElement.classList.contains('text-danger')) {
-      errorElement.textContent = '';
+    // Funciones de erores /limpiar campos
+    function clearFieldErrors(fieldIds) {
+      fieldIds.forEach(id => {
+        const field = document.getElementById(id);
+        const errorElement = field.nextElementSibling;
+        if (errorElement && errorElement.classList.contains('text-danger')) {
+          errorElement.textContent = '';
+        }
+      });
     }
-  });
-}
-function showFieldError(fieldId, message) {
-  const field = document.getElementById(fieldId);
-  let errorDiv = field.nextElementSibling;
+    function showFieldError(fieldId, message) {
+      const field = document.getElementById(fieldId);
+      let errorDiv = field.nextElementSibling;
 
-  // Div eroror: Mostrar un mensaje de error justo debajo del campo del formulario donde ocurrió la validación fallida.
-  if (!errorDiv || !errorDiv.classList.contains('text-danger')) {
-    errorDiv = document.createElement('div');
-    errorDiv.className = 'text-danger mt-1';
-    field.parentNode.insertBefore(errorDiv, field.nextSibling);
-  }
+      // Div eroror: Mostrar un mensaje de error justo debajo del campo del formulario donde ocurrió la validación fallida.
+      if (!errorDiv || !errorDiv.classList.contains('text-danger')) {
+        errorDiv = document.createElement('div');
+        errorDiv.className = 'text-danger mt-1';
+        field.parentNode.insertBefore(errorDiv, field.nextSibling);
+      }
 
-  errorDiv.textContent = message;
-}
+      errorDiv.textContent = message;
+    }
 
-// muestra alertas de bootstrap de error
-function showErrors(errors) {
-  const alertContainer = document.getElementById('alertContainer');
-  alertContainer.innerHTML = ''; // limpiar anteriores
-  errors.forEach(error => {
-    const alert = document.createElement('div');
-    alert.className = 'alert alert-danger alert-dismissible fade show';
-    alert.innerHTML = `
+    // muestra alertas de bootstrap de error
+    function showErrors(errors) {
+      const alertContainer = document.getElementById('alertContainer');
+      alertContainer.innerHTML = ''; // limpiar anteriores
+      errors.forEach(error => {
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-danger alert-dismissible fade show';
+        alert.innerHTML = `
             ${error}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         `;
-    alertContainer.appendChild(alert);
-  });
-}
+        alertContainer.appendChild(alert);
+      });
+    }
 
-// Mensaje de usuario registrado con exito 
-function showSuccess(message) {
-  const successDiv = document.getElementById('successMessage');
-  successDiv.textContent = message;
-  successDiv.classList.remove('d-none');
+    // Mensaje de usuario registrado con exito 
+    function showSuccess(message) {
+      const successDiv = document.getElementById('successMessage');
+      successDiv.textContent = message;
+      successDiv.classList.remove('d-none');
 
-  // Ocultar después de 3 segundos mensaje de registro exitoso
-  setTimeout(() => {
-    successDiv.classList.add('d-none');
-  }, 3000);
-}
+      // Ocultar después de 3 segundos mensaje de registro exitoso
+      setTimeout(() => {
+        successDiv.classList.add('d-none');
+      }, 3000);
+    }
 
-//limpiar el contenido HTML del contenedor de alertas.
-function clearAlerts() {
-  const alertContainer = document.getElementById('alertContainer');
-  alertContainer.innerHTML = '';
-}
+    //limpiar el contenido HTML del contenedor de alertas.
+    function clearAlerts() {
+      const alertContainer = document.getElementById('alertContainer');
+      alertContainer.innerHTML = '';
+    }
 
 
 

@@ -90,7 +90,6 @@ document.addEventListener('DOMContentLoaded', function () {
         currentIndex = (currentIndex + 1) % slideCount;
         updateCarousel();
     }
-
     function prevSlide() {
         currentIndex = (currentIndex - 1 + slideCount) % slideCount;
         updateCarousel();
