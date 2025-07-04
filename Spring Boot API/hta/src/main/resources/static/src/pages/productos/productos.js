@@ -1,18 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
   inicializarPagina();
+  
+
+  
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const usuario = JSON.parse(localStorage.getItem("usuarioActivo") || "{}");
+    const btnInventario = document.getElementById("btnInventario");
+
+    // Validación por nombre (en mayúsculas)
+    if (usuario.nombre !== "ADMIN") {
+      btnInventario.style.display = "none"; // Oculta el botón si no es ADMIN
+    } else {
+      btnInventario.style.display = "inline-block"; // Muestra solo si es ADMIN
+    }
+  });
 
 function inicializarPagina() {
   cargarFiltros();
   cargarCategoriasVisuales();
   // Eventos para los filtros
   document.getElementById("filtros-container").addEventListener("change", aplicarFiltros);
-<<<<<<< HEAD
   cargarProductosDesdeBackend();
 
-=======
-  cargarProductosDesdeLocalStorage();
->>>>>>> Mariana
+
   configurarBotonVolver();
 }
 
@@ -204,7 +217,7 @@ function mostrarTodasLasSecciones() {
 }
 
 /* ──────── CARGAR PRODUCTOS ──────── */
-<<<<<<< HEAD
+
 async function cargarProductosDesdeBackend() {
   try {
     const response = await fetch("http://localhost:8088/api/v1/products");
@@ -234,41 +247,6 @@ async function cargarProductosDesdeBackend() {
 
 
 
-=======
-function cargarProductosDesdeLocalStorage() {
-  const productos = JSON.parse(localStorage.getItem("productos")) || [];
-
-  const secciones = {
-    "productos para invernadero": "grid-invernadero",
-    "malla sombra": "grid-malla-sombra",
-    "mallas decorativas": "grid-mallas-decorativas",
-    "accesorios hidroponia": "grid-accesorios"
-  };
-
-  const ofertas = document.getElementById("ofertas-flash");
-
-  productos.forEach(producto => {
-    if (!producto.nombre || !producto.precio || !producto.categoria) return;
-
-    const categoriaKey = producto.categoria.trim().toLowerCase();
-    const contenedorId = secciones[categoriaKey];
-    const contenedor = document.getElementById(contenedorId);
-    if (!contenedor) return;
-
-    const tarjeta = crearTarjetaProducto(producto);
-    contenedor.appendChild(tarjeta);
-
-    if (producto.precioOriginal && producto.precioOriginal > producto.precio) {
-      const oferta = crearTarjetaProducto(producto, "producto-card oferta");
-      const col = document.createElement("div");
-      col.className = "oferta wrapper";
-      col.appendChild(oferta);
-      ofertas?.appendChild(col);
-    }
-  });
-}
-
->>>>>>> Mariana
 /* ──────── TARJETAS DE PRODUCTOS ──────── */
 function crearTarjetaProducto(producto, claseCard = "producto-card") {
   const { imagen, nombre, descripcion, precio, precioOriginal } = producto;
