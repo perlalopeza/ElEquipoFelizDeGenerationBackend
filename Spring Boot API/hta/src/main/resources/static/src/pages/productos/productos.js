@@ -2,13 +2,13 @@ document.addEventListener("DOMContentLoaded", () => {
   inicializarPagina();
 });
 
+let productosDesdeAPI = [];
+
 function inicializarPagina() {
   cargarFiltros();
   cargarCategoriasVisuales();
-  // Eventos para los filtros
   document.getElementById("filtros-container").addEventListener("change", aplicarFiltros);
   cargarProductosDesdeBackend();
-
   configurarBotonVolver();
 }
 
@@ -54,23 +54,18 @@ function crearDefinicionFiltro(titulo, id, opciones) {
 
   contenedor.appendChild(boton);
   contenedor.appendChild(contenido);
-
   return contenedor;
 }
 
-// ──────── FUNCION FILTRAR SIDE BAR ────────
-
+/* ──────── APLICAR FILTROS ──────── */
 function aplicarFiltros() {
   mostrarTodasLasSecciones();
 
-  const productos = JSON.parse(localStorage.getItem("productos")) || [];
-
-  // Obtener valores de filtros seleccionados
+  const productos = productosDesdeAPI;
   const filtrosPrecio = obtenerFiltrosSeleccionados("precio");
   const filtrosDescuento = obtenerFiltrosSeleccionados("descuento");
 
   const productosFiltrados = productos.filter(producto => {
-    // Filtro por precio
     const cumplePrecio = filtrosPrecio.length === 0 || filtrosPrecio.some(rango => {
       if (rango === "1000+") return producto.precio >= 1000;
       const [min, max] = rango.split("-").map(Number);
@@ -93,8 +88,8 @@ function obtenerFiltrosSeleccionados(nombre) {
     .map(input => input.value);
 }
 
+/* ──────── MOSTRAR PRODUCTOS FILTRADOS Y OFERTAS ──────── */
 function mostrarProductosFiltrados(productos) {
-  // Limpiar secciones visibles
   const contenedores = [
     "grid-invernadero",
     "grid-malla-sombra",
@@ -106,13 +101,15 @@ function mostrarProductosFiltrados(productos) {
     if (cont) cont.innerHTML = "";
   });
 
-  // Reutilizar el mapa de secciones
   const secciones = {
     "productos para invernadero": "grid-invernadero",
     "malla sombra": "grid-malla-sombra",
     "mallas decorativas": "grid-mallas-decorativas",
     "accesorios hidroponia": "grid-accesorios"
   };
+
+  const ofertas = document.getElementById("ofertas-flash");
+  if (ofertas) ofertas.innerHTML = "";
 
   productos.forEach(producto => {
     const categoriaKey = producto.categoria.trim().toLowerCase();
@@ -122,10 +119,18 @@ function mostrarProductosFiltrados(productos) {
 
     const tarjeta = crearTarjetaProducto(producto);
     contenedor.appendChild(tarjeta);
+
+    if (producto.precioOriginal && producto.precioOriginal > producto.precio) {
+      const ofertaCard = crearTarjetaProducto(producto, "producto-card oferta");
+      const col = document.createElement("div");
+      col.className = "oferta wrapper";
+      col.appendChild(ofertaCard);
+      ofertas?.appendChild(col);
+    }
   });
 }
 
-/* ──────── NAVEGACIÓN ENTRE CATEGORÍAS ──────── */
+/* ──────── CATEGORÍAS VISUALES ──────── */
 function cargarCategoriasVisuales() {
   const categorias = [
     crearCategoria("INVERNADERO HTA", "Productos para invernadero", "productos-invernadero", "https://www.hta.mx/.cm4all/mediadb/HTA%20INICIO/CENITAL2.jpg"),
@@ -161,12 +166,7 @@ function crearCategoria(categoria, titulo, destinoId, imagen) {
 }
 
 function mostrarSoloSeccion(idVisible) {
-  const ids = [
-    "productos-invernadero",
-    "malla-sombra",
-    "mallas-decorativas",
-    "accesorios-hidroponia"
-  ];
+  const ids = ["productos-invernadero", "malla-sombra", "mallas-decorativas", "accesorios-hidroponia"];
   ids.forEach(id => {
     const sec = document.getElementById(id);
     if (sec) sec.style.display = id === idVisible ? "block" : "none";
@@ -184,12 +184,7 @@ function configurarBotonVolver() {
 }
 
 function mostrarTodasLasSecciones() {
-  const ids = [
-    "productos-invernadero",
-    "malla-sombra",
-    "mallas-decorativas",
-    "accesorios-hidroponia"
-  ];
+  const ids = ["productos-invernadero", "malla-sombra", "mallas-decorativas", "accesorios-hidroponia"];
   ids.forEach(id => {
     const sec = document.getElementById(id);
     if (sec) sec.style.display = "block";
@@ -199,15 +194,13 @@ function mostrarTodasLasSecciones() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/* ──────── CARGAR PRODUCTOS ──────── */
+/* ──────── API FETCH ──────── */
 async function cargarProductosDesdeBackend() {
   try {
     const response = await fetch("http://localhost:8088/api/v1/products");
     if (!response.ok) throw new Error("Error al cargar productos");
 
     const productosBackend = await response.json();
-
-    // Adaptar estructura a la esperada por la UI
     const productosAdaptados = productosBackend.map(p => ({
       nombre: p.productName,
       precio: p.price,
@@ -216,10 +209,11 @@ async function cargarProductosDesdeBackend() {
       imagen: p.image,
       stock: p.stock,
       descuento: p.discount,
-      categoria: p.category.name  // <--- Aquí es clave
+      categoria: p.category.name
     }));
 
-    mostrarProductosFiltrados(productosAdaptados);
+    productosDesdeAPI = productosAdaptados;
+    mostrarProductosFiltrados(productosDesdeAPI);
 
   } catch (error) {
     console.error("Error al cargar productos desde API", error);
@@ -227,9 +221,7 @@ async function cargarProductosDesdeBackend() {
   }
 }
 
-
-
-/* ──────── TARJETAS DE PRODUCTOS ──────── */
+/* ──────── TARJETAS ──────── */
 function crearTarjetaProducto(producto, claseCard = "producto-card") {
   const { imagen, nombre, descripcion, precio, precioOriginal } = producto;
 
@@ -258,7 +250,7 @@ function crearTarjetaProducto(producto, claseCard = "producto-card") {
   return card;
 }
 
-/* ──────── UTILIDAD ──────── */
+/* ──────── UTILIDADES ──────── */
 function obtenerDescuento(producto) {
   if (!producto.precioOriginal || producto.precioOriginal <= producto.precio) return 0;
   return Math.round(((producto.precioOriginal - producto.precio) / producto.precioOriginal) * 100);
