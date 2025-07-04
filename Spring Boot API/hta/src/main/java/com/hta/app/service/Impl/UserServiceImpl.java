@@ -1,5 +1,6 @@
 package com.hta.app.service.Impl;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import com.hta.app.service.UserService;
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
+	
 	
 	public UserServiceImpl(UserRepository userRepository) {
 		super();
@@ -37,11 +39,18 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User save(User user) {
-		user.setId(null); 
-		User newUser = userRepository.save(user);
-		return newUser;
+	    if (userRepository.existsByEmail(user.getEmail())) {
+	        throw new IllegalStateException("El correo ya está registrado");
+	    }
 
+	    if (user.getCreatedAt() == null) {
+	        user.setCreatedAt(LocalDateTime.now());
+	    }
+
+	    user.setId(null);
+	    return userRepository.save(user);
 	}
+
 
 	@Override
 	public User update(Long id, User user) {
