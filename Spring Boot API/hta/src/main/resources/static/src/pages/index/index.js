@@ -7,7 +7,7 @@ async function cargarProductosMasVendidos() {
     carouselContenedor.innerHTML = '';
 
     try {
-        const response = await fetch('http://localhost:8088/api/v1/products');
+        const response = await fetch('http://localhost:8080/api/v1/products');
         if (!response.ok) {
             throw new Error('Error al obtener los productos');
         }

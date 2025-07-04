@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8088/api/v1/products";
+const API_BASE = "http://localhost:8080/api/v1/products";
 
 let editando = false;
 let codigoProductoEditando = null;
@@ -71,6 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
       </p>
       <p class="stock-info ${producto.stock < 50 ? 'text-danger' : ''}">Disponibles: ${producto.stock}</p>
       <p><strong>Categoría:</strong> ${producto.categoria || '-'}</p>
+      <button class="btn btn-outline-primary btn-sm me-2 editar-btn">Editar</button>
+      <br></br>
       <button class="btn btn-outline-danger btn-sm eliminar-btn">Eliminar</button>
     `;
 
