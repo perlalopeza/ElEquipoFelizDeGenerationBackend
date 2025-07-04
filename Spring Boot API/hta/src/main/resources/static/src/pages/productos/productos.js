@@ -5,9 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
 });
 
-<<<<<<< HEAD
 let productosDesdeAPI = [];
-=======
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const usuario = JSON.parse(localStorage.getItem("usuarioActivo") || "{}");
@@ -20,18 +19,14 @@ document.addEventListener("DOMContentLoaded", () => {
       btnInventario.style.display = "inline-block"; // Muestra solo si es ADMIN
     }
   });
->>>>>>> b1cdc149aef004aa56866723e0ab40c482afc4dc
+
 
 function inicializarPagina() {
   cargarFiltros();
   cargarCategoriasVisuales();
   document.getElementById("filtros-container").addEventListener("change", aplicarFiltros);
   cargarProductosDesdeBackend();
-<<<<<<< HEAD
-=======
 
-
->>>>>>> b1cdc149aef004aa56866723e0ab40c482afc4dc
   configurarBotonVolver();
 }
 
@@ -217,12 +212,9 @@ function mostrarTodasLasSecciones() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-<<<<<<< HEAD
-/* ──────── API FETCH ──────── */
-=======
+
 /* ──────── CARGAR PRODUCTOS ──────── */
 
->>>>>>> b1cdc149aef004aa56866723e0ab40c482afc4dc
 async function cargarProductosDesdeBackend() {
   try {
     const response = await fetch("http://localhost:8088/api/v1/products");
