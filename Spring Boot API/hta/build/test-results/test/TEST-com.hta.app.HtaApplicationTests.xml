@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.hta.app.HtaApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-07-04T07:48:55.379Z" hostname="LAPTOP-HPJ76B3J" time="0.929">
+  <properties/>
+  <testcase name="contextLoads()" classname="com.hta.app.HtaApplicationTests" time="0.929"/>
+  <system-out><![CDATA[01:48:48.349 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.hta.app.HtaApplicationTests]: HtaApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+01:48:48.513 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.hta.app.HtaApplication for test class com.hta.app.HtaApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.3)
+
+2025-07-04T01:48:49.233-06:00  INFO 20044 --- [hta] [    Test worker] com.hta.app.HtaApplicationTests          : Starting HtaApplicationTests using Java 17.0.12 with PID 20044 (started by renec in C:\Users\renec\OneDrive\Escritorio\Trabajo\Generation\ProyectoFinalIntegrador Backend\ElEquipoFelizDeGenerationBackend\Spring Boot API\hta)
+2025-07-04T01:48:49.235-06:00  INFO 20044 --- [hta] [    Test worker] com.hta.app.HtaApplicationTests          : No active profile set, falling back to 1 default profile: "default"
+2025-07-04T01:48:50.190-06:00  INFO 20044 --- [hta] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-04T01:48:50.335-06:00  INFO 20044 --- [hta] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 130 ms. Found 7 JPA repository interfaces.
+2025-07-04T01:48:50.849-06:00  INFO 20044 --- [hta] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-07-04T01:48:51.263-06:00  INFO 20044 --- [hta] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:c34af22c-3e01-4e77-a31d-9dcdae13449a user=SA
+2025-07-04T01:48:51.269-06:00  INFO 20044 --- [hta] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-07-04T01:48:51.369-06:00  INFO 20044 --- [hta] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-04T01:48:51.500-06:00  INFO 20044 --- [hta] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-07-04T01:48:51.571-06:00  INFO 20044 --- [hta] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-07-04T01:48:52.119-06:00  INFO 20044 --- [hta] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-04T01:48:52.249-06:00  INFO 20044 --- [hta] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-04T01:48:53.828-06:00  INFO 20044 --- [hta] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-04T01:48:53.856-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists cart_items cascade 
+2025-07-04T01:48:53.864-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists categories cascade 
+2025-07-04T01:48:53.865-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists privileges cascade 
+2025-07-04T01:48:53.865-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists products cascade 
+2025-07-04T01:48:53.866-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists shopping_cart cascade 
+2025-07-04T01:48:53.866-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists user_addresses cascade 
+2025-07-04T01:48:53.866-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists users cascade 
+2025-07-04T01:48:53.875-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    create table cart_items (
+        price_at_purchase numeric(10,2) not null,
+        quantity integer not null,
+        products_id bigint not null,
+        shopping_cart_id bigint not null,
+        primary key (products_id, shopping_cart_id)
+    )
+2025-07-04T01:48:53.889-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    create table categories (
+        id bigint generated by default as identity,
+        name varchar(255) not null,
+        primary key (id)
+    )
+2025-07-04T01:48:53.896-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    create table privileges (
+        id bigint generated by default as identity,
+        privilege varchar(20) not null,
+        primary key (id)
+    )
+2025-07-04T01:48:53.898-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    create table products (
+        discount numeric(10,2) not null,
+        price numeric(10,2) not null,
+        category_id bigint not null,
+        id bigint generated by default as identity,
+        stock bigint not null,
+        description TEXT not null,
+        image TEXT not null,
+        product_name varchar(255) not null,
+        primary key (id)
+    )
+2025-07-04T01:48:53.899-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    create table shopping_cart (
+        shipment numeric(10,2) not null,
+        subtotal numeric(10,2) not null,
+        total numeric(10,2) not null,
+        id bigint generated by default as identity,
+        users_id bigint not null,
+        primary key (id)
+    )
+2025-07-04T01:48:53.901-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    create table user_addresses (
+        id bigint generated by default as identity,
+        users_id bigint not null,
+        zip_code bigint not null,
+        neighborhood TEXT not null,
+        state TEXT not null,
+        street_and_number TEXT not null,
+        town TEXT not null,
+        primary key (id)
+    )
+2025-07-04T01:48:53.904-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    create table users (
+        created_at TIMESTAMP not null,
+        id bigint generated by default as identity,
+        privileges_id bigint not null,
+        phone varchar(15) not null,
+        email varchar(255) not null unique,
+        last_name varchar(255) not null,
+        name varchar(255) not null,
+        password varchar(255) not null,
+        primary key (id)
+    )
+2025-07-04T01:48:53.908-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists cart_items 
+       add constraint FKmb92cy9bs4b82pteh73r7ais8 
+       foreign key (products_id) 
+       references products
+2025-07-04T01:48:53.930-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists cart_items 
+       add constraint FKfbjrcn87oo0j82ojyeh5tfbtp 
+       foreign key (shopping_cart_id) 
+       references shopping_cart
+2025-07-04T01:48:53.931-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists products 
+       add constraint FKog2rp4qthbtt2lfyhfo32lsw9 
+       foreign key (category_id) 
+       references categories
+2025-07-04T01:48:53.933-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists shopping_cart 
+       add constraint FKficef7nslpf9w6k6ops7l73g7 
+       foreign key (users_id) 
+       references users
+2025-07-04T01:48:53.934-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists user_addresses 
+       add constraint FK78b6fry8xdcr01eqvegxrcpsv 
+       foreign key (users_id) 
+       references users
+2025-07-04T01:48:53.936-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists users 
+       add constraint FK7b5vqf0bmgul76i8rl8q2109j 
+       foreign key (privileges_id) 
+       references privileges
+2025-07-04T01:48:53.949-06:00  INFO 20044 --- [hta] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-04T01:48:54.652-06:00  WARN 20044 --- [hta] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-04T01:48:54.676-06:00  INFO 20044 --- [hta] [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2025-07-04T01:48:55.172-06:00  INFO 20044 --- [hta] [    Test worker] com.hta.app.HtaApplicationTests          : Started HtaApplicationTests in 6.372 seconds (process running for 8.111)
+2025-07-04T01:48:55.239-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        categories
+        (name, id) 
+    values
+        (?, default)
+2025-07-04T01:48:55.250-06:00 TRACE 20044 --- [hta] [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter (1:VARCHAR) <- [Productos para invernadero]
+2025-07-04T01:48:55.338-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        categories
+        (name, id) 
+    values
+        (?, default)
+2025-07-04T01:48:55.339-06:00 TRACE 20044 --- [hta] [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter (1:VARCHAR) <- [Mallas sombra]
+2025-07-04T01:48:55.341-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        categories
+        (name, id) 
+    values
+        (?, default)
+2025-07-04T01:48:55.342-06:00 TRACE 20044 --- [hta] [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter (1:VARCHAR) <- [Mallas decorativas]
+2025-07-04T01:48:55.344-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        categories
+        (name, id) 
+    values
+        (?, default)
+2025-07-04T01:48:55.345-06:00 TRACE 20044 --- [hta] [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter (1:VARCHAR) <- [Accesorios de hidroponía]
+2025-07-04T01:48:55.348-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        privileges
+        (privilege, id) 
+    values
+        (?, default)
+2025-07-04T01:48:55.348-06:00 TRACE 20044 --- [hta] [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter (1:VARCHAR) <- [Administrador]
+2025-07-04T01:48:55.350-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        privileges
+        (privilege, id) 
+    values
+        (?, default)
+2025-07-04T01:48:55.350-06:00 TRACE 20044 --- [hta] [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter (1:VARCHAR) <- [Colaborador]
+2025-07-04T01:48:55.353-06:00 DEBUG 20044 --- [hta] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        privileges
+        (privilege, id) 
+    values
+        (?, default)
+2025-07-04T01:48:55.354-06:00 TRACE 20044 --- [hta] [    Test worker] org.hibernate.orm.jdbc.bind              : binding parameter (1:VARCHAR) <- [Cliente]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

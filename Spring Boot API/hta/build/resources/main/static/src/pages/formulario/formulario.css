@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --sea-green: #118A4D;
+    --cambridge-blue: #8FAF8A;
+    --british-racing-green: #0D3B1E;
+    --tea-green: #C1D7AE;
+    --beige: #F5F5DC;
+    --cinereous: #8D6E63;
+    --pale-tea-green: #C8E6C9;
+}
+
+
+body {
+    background-color: var(--beige);
+    margin: 0;
+    padding: 0;
+}
+
+.titulos {
+    font-family: 'Merriweather', serif;
+    color: var(--british-racing-green);
+}
+
+.main-content{
+    padding-top: 90px;
+}
+
+
+
+form {
+    background: var(--tea-green);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.alert {
+    margin-bottom: 1rem;
+}
+
